@@ -5,24 +5,22 @@ import LogIn from "./pages/LogIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import DashboardLayout from "@/components/layouts/DashboardLayout.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
-import LogOut from "@/pages/LogOut.tsx";
+import Logout from "@/pages/auth/logout.tsx";
 
 function App() {
     return (
         <div>
             <Routes>
-
-
-                {/*  */}
+                {/* Root  */}
                 <Route path="/" element={<HomeLayout/>}>
                     <Route path="auth">
-                        <Route path="log-in" element={<LogIn/>}/>
-                        <Route path="sign-up" element={<SignUp/>}/>
-                        <Route path="logout" element={<LogOut/>}/>
+                        <Route path="login" element={<LogIn/>}/>
+                        <Route path="signup" element={<SignUp/>}/>
+                        <Route path="logout" element={<Logout/>}/>
                     </Route>
                     <Route index element={<LandingPage/>}/>
                 </Route>
-                <Route path="dashboard" element={<DashboardLayout />}>
+                <Route path="dashboard" element={<DashboardLayout/>}>
                     <Route index element={<Dashboard/>}/>
                 </Route>
             </Routes>

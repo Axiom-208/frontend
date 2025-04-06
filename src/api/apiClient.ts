@@ -17,12 +17,13 @@ export interface ApiResponse<T> {
 
 
 export const apiClient = axios.create({
-    baseURL: config.api.apiUrl,
+    baseURL: `${config.api.apiUrl}/api/v1`,
     timeout: config.api.timeout,
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
     },
+    withCredentials: true
 });
 
 

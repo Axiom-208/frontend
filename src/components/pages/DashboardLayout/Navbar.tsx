@@ -1,31 +1,14 @@
 import {useState} from "react";
 import {Link, NavLink} from "react-router";
 import {Menu, X, ChevronDown} from "lucide-react";
-import { DropdownMenuContent, DropdownMenuTrigger, DropdownMenu, DropdownMenuItem} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import {DropdownMenuContent, DropdownMenuTrigger, DropdownMenu, DropdownMenuItem} from "@/components/ui/dropdown-menu";
+import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {Input} from "@/components/ui/input.tsx";
 
 
-const navbarOptions = [
-    {
-        route: "",
-        label: "Home"
-    },
-    {
-        route: "reports",
-        label: "Reports"
-    },
-    {
-        route: "settings",
-        label: "Settings"
-    }
-]
-
 export default function DashboardNavbar() {
     const [isOpen, setIsOpen] = useState(false);
-
-    const route = location.pathname.split("/")[1];
 
     return (
         <nav className="bg-white border-b sticky top-0 left-0 w-full z-50">
@@ -35,16 +18,6 @@ export default function DashboardNavbar() {
                         Axiom
                     </Link>
                     <Input placeholder="Search..." className="w-[30%] rounded-full"/>
-                    <div className="hidden md:flex space-x-6">
-                        {
-                            navbarOptions.map((option, index) => (
-                                <NavLink to={option.route} key={index}
-                                         className={option.route == route ? "text-blue-600 font-semibold" : "text-sm text-gray-400 hover:text-zinc-700"}>
-                                    {option.label}
-                                </NavLink>
-                            ))
-                        }
-                    </div>
 
                     <div className="hidden md:flex items-center space-x-4">
                         <DropdownMenu>

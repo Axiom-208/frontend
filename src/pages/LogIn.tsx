@@ -28,7 +28,8 @@ import {
 import {
     Input
 } from "@/components/ui/input"
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
+import {logIn} from "@/api/auth/requests.ts";
 
 function LogIn() {
     return (
@@ -45,8 +46,10 @@ function LogIn() {
 
 
 const formSchema = z.object({
-    email: z.string(),
-    password: z.string().min(1).min(6).max(12)
+    email: z.string().email({
+        message: "Enter a valid email"
+    }),
+    password: z.string().min(5).max(12)
 });
 
 function MyForm() {
@@ -55,20 +58,28 @@ function MyForm() {
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const form = useForm < z.infer < typeof formSchema >> ({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
 
     })
 
-    function onSubmit(values: z.infer < typeof formSchema > ) {
+    function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            console.log(values);
-            toast(
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                  <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-                </pre>
-            );
-            navigate("/dashboard")
+            logIn({
+                email: values.email,
+                password: values.password,
+            }).then(() => {
+                toast(
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+                    </pre>
+                );
+                navigate("/dashboard")
+            })
+                .catch((error) => {
+                    throw error;
+                })
+
         } catch (error) {
             console.error("Form submission error", error);
             toast.error("Failed to submit the form. Please try again.");
@@ -82,7 +93,7 @@ function MyForm() {
                 <FormField
                     control={form.control}
                     name="email"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl className="">
@@ -93,7 +104,7 @@ function MyForm() {
                                     {...field} />
                             </FormControl>
                             <FormDescription>Enter your email</FormDescription>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
@@ -101,7 +112,7 @@ function MyForm() {
                 <FormField
                     control={form.control}
                     name="password"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
