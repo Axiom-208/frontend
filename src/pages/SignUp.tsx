@@ -7,6 +7,8 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Eye, EyeOff} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 function SignUp() {
     return (
