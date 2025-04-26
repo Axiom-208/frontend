@@ -32,7 +32,7 @@ export default function DashboardNavbar() {
                             <DropdownMenuContent align="end" className="bg-white border border-yellow-100">
                                 <DropdownMenuItem asChild
                                                   className="hover:bg-yellow-50 text-blue-900 focus:bg-yellow-50 focus:text-pink-500">
-                                    <Link to="/profile">Profile</Link>
+                                    <Link to="/dashboard/profile">Profile</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild
                                                   className="hover:bg-yellow-50 text-blue-900 focus:bg-yellow-50 focus:text-pink-500">
