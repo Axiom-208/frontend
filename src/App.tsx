@@ -6,6 +6,7 @@ import DashboardLayout from "@/components/layouts/DashboardLayout.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Home from './pages/Home.tsx';
 import Logout from "@/pages/auth/logout.tsx";
+import Profile from './pages/Profile.tsx';
 
 function App() {
     return (
@@ -15,7 +16,6 @@ function App() {
                 <Route element={<HomeLayout/>}>
                     {/* Landing page */}
                     <Route path="/" element={<Home/>}/>
-
 
                     {/* Auth routes */}
                     <Route path="auth">
@@ -28,6 +28,7 @@ function App() {
                 {/* Protected dashboard routes */}
                 <Route path="dashboard" element={<DashboardLayout/>}>
                     <Route index element={<Dashboard/>}/>
+                    <Route path="profile" element={<Profile/>}/>
                     {/* Add more dashboard routes here */}
                 </Route>
             </Routes>
