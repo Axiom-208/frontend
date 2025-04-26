@@ -1,12 +1,17 @@
 import {ENDPOINTS} from "@/api/auth/routes.ts";
 import ApiService from "@/api/methods.ts";
-import {LogInProps} from "@/api/auth/types.ts";
-import {convertToUser, UserResponse} from "@/schema/user.ts";
+import {LogInProps, RegisterProps} from "@/api/auth/types.ts";
+import {convertToUser, User, UserResponse} from "@/schema/user.ts";
 
 
 export async function logIn(props: LogInProps) {
     const endpoint = ENDPOINTS.LOGIN()
     return await ApiService.post<{ username: string }>(endpoint, props)
+}
+
+export async function register(props: RegisterProps) {
+    const endpoint = ENDPOINTS.REGISTER()
+    return await ApiService.post<User>(endpoint, props)
 }
 
 export async function logOut() {

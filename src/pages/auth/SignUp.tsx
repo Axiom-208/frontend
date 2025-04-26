@@ -1,5 +1,5 @@
 import * as z from "zod";
-import {useState} from "react";
+import {ComponentPropsWithoutRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
@@ -7,48 +7,75 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Eye, EyeOff} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {register} from "@/api/auth/requests.ts";
+import {useNavigate} from "react-router";
+import {cn} from "@/lib/utils.ts";
 
 
 function SignUp() {
     return (
         <div className="flex-1 flex items-center justify-center">
             <div className="flex flex-col items-center justify-center w-full">
-                <h1 className="font-semibold text-xl">
+                <h1 className="font-semibold text-xl mt-8">
                     Create Account
                 </h1>
-                <MyForm/>
+                <SignupForm/>
             </div>
         </div>
     );
 }
 
 const formSchema = z.object({
-    firstName: z.string().min(1).min(3).max(20),
-    lastName: z.string().min(1).min(2).max(20),
-    email: z.string(),
-    password: z.string().min(1).min(6).max(12),
-    confirmPassword: z.string().min(1).min(6).max(12)
+    firstName: z.string().min(3).max(20),
+    lastName: z.string().min(2).max(20),
+    username: z.string().min(3).max(20),
+    email: z.string().email(),
+    password: z.string().min(6).max(12),
+    confirmPassword: z.string().min(6).max(12)
 });
 
 
-function MyForm() {
+function SignupForm({
+                        className,
+                        ...props
+                    }: ComponentPropsWithoutRef<"form">) {
 
+    const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-    const form = useForm < z.infer < typeof formSchema >> ({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
     })
 
-    function onSubmit(values: z.infer < typeof formSchema > ) {
+    console.log(form.getValues())
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log("SUBMITTING")
+        const {email, password, confirmPassword, lastName, firstName, username} = values;
+        if (password !== confirmPassword) {
+            toast.error("Passwords don't match");
+            return;
+        }
         try {
-            console.log(values);
-            toast(
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
+            register({
+                email,
+                password,
+                firstName,
+                lastName,
+                username
+            }).then(() => {
+                    toast.success("Account successfully created!");
+                    navigate("/dashboard");
+                }
             );
         } catch (error) {
             console.error("Form submission error", error);
@@ -58,7 +85,11 @@ function MyForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full max-w-[500px] py-10">
+            <form
+                {...props}
+                onSubmit={form.handleSubmit(onSubmit)}
+                className={cn("space-y-4 w-full max-w-[500px] my-10", className)}
+            >
 
                 <div className="grid grid-cols-12 gap-4">
 
@@ -67,7 +98,7 @@ function MyForm() {
                         <FormField
                             control={form.control}
                             name="firstName"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>First Name</FormLabel>
                                     <FormControl>
@@ -77,7 +108,7 @@ function MyForm() {
                                             type="text"
                                             {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -88,7 +119,7 @@ function MyForm() {
                         <FormField
                             control={form.control}
                             name="lastName"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Last Name</FormLabel>
                                     <FormControl>
@@ -98,7 +129,7 @@ function MyForm() {
                                             type="text"
                                             {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -106,20 +137,37 @@ function MyForm() {
 
                 </div>
 
+
+                <FormField
+                    control={form.control}
+                    name="username"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Username</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="johndoe"
+                                    type="text"
+                                    {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+
                 <FormField
                     control={form.control}
                     name="email"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="johndoe@mail.com"
-
                                     type="email"
                                     {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
@@ -127,7 +175,7 @@ function MyForm() {
                 <FormField
                     control={form.control}
                     name="password"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
@@ -181,7 +229,9 @@ function MyForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="button" onClick={() => {
+                    onSubmit(form.getValues())
+                }}>Submit</Button>
             </form>
         </Form>
     )

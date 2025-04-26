@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {Link} from "react-router";
 
 function Navbar() {
@@ -8,14 +8,14 @@ function Navbar() {
                 <Link to="" className="text-2xl font-bold text-white hover:text-amber-200 transition duration-200">
                     AXIOM
                 </Link>
-                
+
                 <nav className="flex items-center justify-between gap-4">
-                    <Link to="login">
+                    <Link to="/auth/login">
                         <Button variant="ghost" className="text-white hover:text-amber-200 hover:bg-gray-800">
                             Log In
                         </Button>
                     </Link>
-                    <Link to="/signup">
+                    <Link to="/auth/signup">
                         <Button variant="secondary" className="bg-amber-200 text-gray-900 hover:bg-amber-300">
                             Sign Up
                         </Button>

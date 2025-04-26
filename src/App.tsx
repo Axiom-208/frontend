@@ -1,32 +1,33 @@
-import { Route, Routes } from "react-router";
+import {Route, Routes} from "react-router";
 import HomeLayout from "./components/layouts/HomeLayout.tsx";
-import LogIn from "./pages/LogIn.tsx";
-import SignUp from "./pages/SignUp.tsx";
+import LogIn from "./pages/auth/LogIn.tsx";
+import SignUp from "./pages/auth/SignUp.tsx";
 import DashboardLayout from "@/components/layouts/DashboardLayout.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Home from './pages/Home.tsx';
 import Logout from "@/pages/auth/logout.tsx";
+
 function App() {
     return (
         <div>
             <Routes>
                 {/* Public routes with HomeLayout */}
-                <Route element={<HomeLayout />}>
+                <Route element={<HomeLayout/>}>
                     {/* Landing page */}
-                    <Route path="/" element={<Home />} />
-                    <Route path="signup" element={<SignUp />} />
-                    <Route path="login" element={<LogIn />} />
-                    <Route path="logout" element={<Logout />} />
+                    <Route path="/" element={<Home/>}/>
+
 
                     {/* Auth routes */}
                     <Route path="auth">
-                        {/*Nada funciona aq dentro @Delcio */}
+                        <Route path="signup" element={<SignUp/>}/>
+                        <Route path="login" element={<LogIn/>}/>
+                        <Route path="logout" element={<Logout/>}/>
                     </Route>
                 </Route>
-                
+
                 {/* Protected dashboard routes */}
-                <Route path="dashboard" element={<DashboardLayout />}>
-                    <Route index element={<Dashboard />} />
+                <Route path="dashboard" element={<DashboardLayout/>}>
+                    <Route index element={<Dashboard/>}/>
                     {/* Add more dashboard routes here */}
                 </Route>
             </Routes>

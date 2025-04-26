@@ -15,7 +15,7 @@ import * as z from "zod"
 
 import {
     Button
-} from "@/components/ui/button"
+} from "@/components/ui/button.tsx"
 import {
     Form,
     FormControl,
@@ -24,10 +24,10 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form.tsx"
 import {
     Input
-} from "@/components/ui/input"
+} from "@/components/ui/input.tsx"
 import {useNavigate} from "react-router";
 import {logIn} from "@/api/auth/requests.ts";
 
@@ -38,7 +38,7 @@ function LogIn() {
                 <h1 className="font-semibold text-xl">
                     Welcome Back
                 </h1>
-                <MyForm/>
+                <LoginForm/>
             </div>
         </div>
     );
@@ -52,7 +52,7 @@ const formSchema = z.object({
     password: z.string().min(5).max(12)
 });
 
-function MyForm() {
+function LoginForm() {
 
     const navigate = useNavigate()
 
@@ -60,7 +60,6 @@ function MyForm() {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
