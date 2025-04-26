@@ -1,7 +1,7 @@
 import {ENDPOINTS} from "@/api/auth/routes.ts";
 import ApiService from "@/api/methods.ts";
 import {LogInProps, RegisterProps} from "@/api/auth/types.ts";
-import {convertToUser, User, UserResponse} from "@/schema/user.ts";
+import {User} from "@/schema/user.ts";
 
 
 export async function logIn(props: LogInProps) {
@@ -21,6 +21,5 @@ export async function logOut() {
 
 export async function getUser() {
     const endpoint = ENDPOINTS.ME()
-    const response = await ApiService.get<UserResponse>(endpoint)
-    return convertToUser(response)
+    return await ApiService.get<User>(endpoint)
 }
