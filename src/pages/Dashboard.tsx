@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FolderPlus, FileText, BookOpen, GraduationCap, Search, Grid, List, Upload, Video } from 'lucide-react';
+import { FolderPlus, FileText, BookOpen, GraduationCap, Search, Grid, List, Upload, Video, Filter } from 'lucide-react';
 
 
 //Faker data 
@@ -27,6 +27,9 @@ const mockChapters = [
   { id: 2, title: 'Data Structures Fundamentals', duration: '5:20', updatedAt: '1 week ago' },
   { id: 3, title: 'Web Development Basics', duration: '4:10', updatedAt: 'Yesterday' },
   { id: 4, title: 'Machine Learning Concepts', duration: '6:30', updatedAt: '3 days ago' },
+  { id: 5, title: 'Machine Learning Concepts2', duration: '6:33', updatedAt: '3 days ago' },
+  { id: 6, title: 'Machine Learning Concepts3', duration: '6:34', updatedAt: '3 days ago' },
+
 ];
 
 type ItemType = 'note' | 'quiz' | 'flashcard' | 'chapter';
@@ -98,8 +101,54 @@ const SectionHeader: React.FC<{ title: string; count: number }> = ({ title, coun
   </div>
 );
 
+// Section filter button component
+const FilterButton: React.FC<{ 
+  type: string; 
+  isActive: boolean; 
+  onClick: () => void;
+  color: string;
+  icon: React.ReactNode;
+}> = ({ type, isActive, onClick, color, icon }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center px-3 py-2 rounded-md transition-colors duration-200 ${
+      isActive ? `${color} text-white` : 'bg-white text-gray-600 border border-gray-200'
+    }`}
+  >
+    <span className="mr-2">{icon}</span>
+    {type}
+  </button>
+);
+
 function Dashboard() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  
+  // Section visibility state
+  const [visibleSections, setVisibleSections] = useState({
+    chapters: true,
+    notes: true,
+    quizzes: true,
+    flashcards: true
+  });
+
+  // Toggle a single section
+  const toggleSection = (section: keyof typeof visibleSections) => {
+    setVisibleSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  // Toggle all sections
+  const toggleAllSections = (value: boolean) => {
+    setVisibleSections({
+      chapters: value,
+      notes: value,
+      quizzes: value,
+      flashcards: value
+    });
+  };
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,6 +178,13 @@ function Dashboard() {
               >
                 <List size={20} />
               </button>
+              <button 
+                className={`p-2 rounded-full ${showFilterMenu ? 'bg-blue-800' : ''}`}
+                onClick={() => setShowFilterMenu(!showFilterMenu)}
+                title="Filter sections"
+              >
+                <Filter size={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -136,6 +192,59 @@ function Dashboard() {
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4">
+        {/* Section Filter */}
+        {showFilterMenu && (
+          <div className="mb-8 p-4 bg-white rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="font-semibold text-gray-800">Filter Sections</h3>
+              <div className="space-x-2">
+                <button 
+                  onClick={() => toggleAllSections(true)}
+                  className="text-sm px-3 py-1 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200"
+                >
+                  Show All
+                </button>
+                <button 
+                  onClick={() => toggleAllSections(false)}
+                  className="text-sm px-3 py-1 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                >
+                  Hide All
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <FilterButton 
+                type="Chapters" 
+                isActive={visibleSections.chapters} 
+                onClick={() => toggleSection('chapters')}
+                color="bg-pink-400"
+                icon={<Video size={16} />}
+              />
+              <FilterButton 
+                type="Notes" 
+                isActive={visibleSections.notes} 
+                onClick={() => toggleSection('notes')}
+                color="bg-blue-900"
+                icon={<FileText size={16} />}
+              />
+              <FilterButton 
+                type="Quizzes" 
+                isActive={visibleSections.quizzes} 
+                onClick={() => toggleSection('quizzes')}
+                color="bg-amber-400"
+                icon={<GraduationCap size={16} />}
+              />
+              <FilterButton 
+                type="Flashcards" 
+                isActive={visibleSections.flashcards} 
+                onClick={() => toggleSection('flashcards')}
+                color="bg-orange-400"
+                icon={<BookOpen size={16} />}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-8">
           <button className="flex items-center px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800">
@@ -160,70 +269,88 @@ function Dashboard() {
           </button>
         </div>
 
-        {/* Chapters Section (Added new section) */}
-        <section className="mb-12">
-          <SectionHeader title="Chapters" count={mockChapters.length} />
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
-            {mockChapters.map(chapter => (
-              <ItemCard 
-                key={chapter.id}
-                id={chapter.id}
-                title={chapter.title}
-                updatedAt={chapter.updatedAt}
-                type="chapter"
-                duration={chapter.duration}
-              />
-            ))}
-          </div>
-        </section>
+        {/* Chapters Section */}
+        {visibleSections.chapters && (
+          <section className="mb-12">
+            <SectionHeader title="Chapters" count={mockChapters.length} />
+            <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
+              {mockChapters.map(chapter => (
+                <ItemCard 
+                  key={chapter.id}
+                  id={chapter.id}
+                  title={chapter.title}
+                  updatedAt={chapter.updatedAt}
+                  type="chapter"
+                  duration={chapter.duration}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Notes Section */}
-        <section className="mb-12">
-          <SectionHeader title="Notes" count={mockNotes.length} />
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
-            {mockNotes.map(note => (
-              <ItemCard 
-                key={note.id}
-                id={note.id}
-                title={note.title}
-                updatedAt={note.updatedAt}
-                type="note"
-              />
-            ))}
-          </div>
-        </section>
+        {visibleSections.notes && (
+          <section className="mb-12">
+            <SectionHeader title="Notes" count={mockNotes.length} />
+            <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
+              {mockNotes.map(note => (
+                <ItemCard 
+                  key={note.id}
+                  id={note.id}
+                  title={note.title}
+                  updatedAt={note.updatedAt}
+                  type="note"
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Quizzes Section */}
-        <section className="mb-12">
-          <SectionHeader title="Quizzes" count={mockQuizzes.length} />
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
-            {mockQuizzes.map(quiz => (
-              <ItemCard 
-                key={quiz.id}
-                id={quiz.id}
-                title={quiz.title}
-                updatedAt={quiz.updatedAt}
-                type="quiz"
-              />
-            ))}
-          </div>
-        </section>
+        {visibleSections.quizzes && (
+          <section className="mb-12">
+            <SectionHeader title="Quizzes" count={mockQuizzes.length} />
+            <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
+              {mockQuizzes.map(quiz => (
+                <ItemCard 
+                  key={quiz.id}
+                  id={quiz.id}
+                  title={quiz.title}
+                  updatedAt={quiz.updatedAt}
+                  type="quiz"
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Flashcards Section */}
-        <section className="mb-12">
-          <SectionHeader title="Flashcards" count={mockFlashcards.length} />
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
-            {mockFlashcards.map(flashcard => (
-              <ItemCard 
-                key={flashcard.id}
-                id={flashcard.id}
-                title={flashcard.title}
-                updatedAt={flashcard.updatedAt}
-                type="flashcard"
-              />
-            ))}
+        {visibleSections.flashcards && (
+          <section className="mb-12">
+            <SectionHeader title="Flashcards" count={mockFlashcards.length} />
+            <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
+              {mockFlashcards.map(flashcard => (
+                <ItemCard 
+                  key={flashcard.id}
+                  id={flashcard.id}
+                  title={flashcard.title}
+                  updatedAt={flashcard.updatedAt}
+                  type="flashcard"
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Show message when no sections are visible */}
+        {!visibleSections.chapters && 
+         !visibleSections.notes && 
+         !visibleSections.quizzes && 
+         !visibleSections.flashcards && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">No sections selected. Use the filter button to show content.</p>
           </div>
-        </section>
+        )}
       </main>
     </div>
   );
