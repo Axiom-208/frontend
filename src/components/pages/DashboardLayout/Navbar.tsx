@@ -35,7 +35,7 @@ export default function DashboardNavbar() {
                             <DropdownMenuContent align="end" className="bg-white border border-yellow-100">
                                 <DropdownMenuItem asChild
                                                   className="hover:bg-yellow-50 text-blue-900 focus:bg-yellow-50 focus:text-pink-500">
-                                    <Link to="/profile">Profile</Link>
+                                    <Link to="/dashboard/profile">Profile</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild
                                                   className="hover:bg-yellow-50 text-blue-900 focus:bg-yellow-50 focus:text-pink-500">
@@ -73,7 +73,7 @@ export default function DashboardNavbar() {
                             Settings
                         </NavLink>
                         <div className="border-t border-yellow-100 pt-2">
-                            <NavLink to="/profile" className="block py-2 text-blue-900 hover:text-pink-500">
+                            <NavLink to="dashboard/profile" className="block py-2 text-blue-900 hover:text-pink-500">
                                 Profile
                             </NavLink>
                             <NavLink to="/auth/login" className="block py-2 text-pink-500 hover:text-pink-600">
