@@ -1,10 +1,25 @@
 import React, {useState, useEffect} from 'react';
-import {FolderPlus, FileText, BookOpen, GraduationCap, Search, Grid, List, Upload, Video, Filter, X} from 'lucide-react';
+import {
+    FolderPlus,
+    FileText,
+    BookOpen,
+    GraduationCap,
+    Search,
+    Grid,
+    List,
+    Upload,
+    Video as VideoIcon,
+    Filter,
+    X
+} from 'lucide-react';
 import {Link, useNavigate} from 'react-router';
 import {quizData} from '@/lib/quiz-data';
 import {Button} from "@/components/ui/button.tsx";
 import UploadNoteModal from '../components/upload/UploadDoc';
 import UploadLectureModal from '../components/upload/UploadLec';
+import {Video, videoCategories} from "@/lib/chapters-data";
+import {categoriesToVideos} from "@/lib/categories-to-videos.ts";
+
 
 //Faker data 
 const mockNotes = [
@@ -28,21 +43,15 @@ const mockFlashcards = [
 ];
 
 // Added mock data for Chapters/shorts
-const mockChapters = [
-    {id: 1, title: 'Introduction to Algorithms', duration: '3:45', updatedAt: '2 days ago'},
-    {id: 2, title: 'Data Structures Fundamentals', duration: '5:20', updatedAt: '1 week ago'},
-    {id: 3, title: 'Web Development Basics', duration: '4:10', updatedAt: 'Yesterday'},
-    {id: 4, title: 'Machine Learning Concepts', duration: '6:30', updatedAt: '3 days ago'},
-    {id: 5, title: 'Machine Learning Concepts2', duration: '6:33', updatedAt: '3 days ago'},
-    {id: 6, title: 'Machine Learning Concepts3', duration: '6:34', updatedAt: '3 days ago'},
-];
+const mockChapters: Video[] = categoriesToVideos(videoCategories)
+
 
 type ItemType = 'note' | 'quiz' | 'flashcard' | 'chapter';
 
 interface ItemProps {
     id: string | number;
     title: string;
-    updatedAt: string;
+    updatedAt?: string;
     type: ItemType;
     duration?: string;
 }
@@ -68,7 +77,7 @@ const ItemCard: React.FC<ItemProps> = ({id, title, updatedAt, type, duration}) =
             case 'flashcard':
                 return <BookOpen className="text-white" size={24}/>;
             case 'chapter':
-                return <Video className="text-white" size={24}/>;
+                return <VideoIcon className="text-white" size={24}/>;
             default:
                 return <FileText className="text-white" size={24}/>;
         }
@@ -142,7 +151,7 @@ function Dashboard() {
     const [isUploadNoteModalOpen, setIsUploadNoteModalOpen] = useState(false);
     const [isUploadLectureModalOpen, setIsUploadLectureModalOpen] = useState(false);
     const [notes, setNotes] = useState(mockNotes);
-    const [chapters, setChapters] = useState(mockChapters);
+    const [chapters, setChapters] = useState<Video[]>(mockChapters);
 
     // Section visibility state
     const [visibleSections, setVisibleSections] = useState({
@@ -174,16 +183,16 @@ function Dashboard() {
             // Filter each category based on search term
             const term = searchTerm.toLowerCase().trim();
             setFilteredData({
-                chapters: chapters.filter(item => 
+                chapters: chapters.filter(item =>
                     item.title.toLowerCase().includes(term)
                 ),
-                notes: notes.filter(item => 
+                notes: notes.filter(item =>
                     item.title.toLowerCase().includes(term)
                 ),
-                quizzes: mockQuizzes.filter(item => 
+                quizzes: mockQuizzes.filter(item =>
                     item.title.toLowerCase().includes(term)
                 ),
-                flashcards: mockFlashcards.filter(item => 
+                flashcards: mockFlashcards.filter(item =>
                     item.title.toLowerCase().includes(term)
                 )
             });
@@ -212,7 +221,7 @@ function Dashboard() {
     const clearSearch = () => {
         setSearchTerm('');
     };
-    
+
     // Should we display each section based on filters and search results
     const shouldShowSection = {
         chapters: visibleSections.chapters && filteredData.chapters.length > 0,
@@ -228,17 +237,17 @@ function Dashboard() {
     const handleNoteUpload = (file: File, title: string) => {
         console.log('Uploading file:', file);
         console.log('With title:', title);
-        
+
         // For now, let's just add a new mock note to the list
         const newNote = {
             id: notes.length + 1,
             title: title,
             updatedAt: 'Just now'
         };
-        
+
         const updatedNotes = [...notes, newNote];
         setNotes(updatedNotes);
-        
+
         // Make sure the notes section is visible
         setVisibleSections(prev => ({
             ...prev,
@@ -250,18 +259,20 @@ function Dashboard() {
     const handleLectureUpload = (youtubeUrl: string, title: string) => {
         console.log('Processing YouTube URL:', youtubeUrl);
         console.log('With title:', title);
-        
+
         // For now, let's just add a new mock chapter to simulate AI processing
-        const newChapter = {
+        const newChapter: Video = {
             id: chapters.length + 1,
             title: title,
-            duration: '4:30', // Mock duration
-            updatedAt: 'Just now'
+            createdAt: 'Just now',
+            url: youtubeUrl,
+            topic: "",
+            description: ""
         };
-        
+
         const updatedChapters = [...chapters, newChapter];
         setChapters(updatedChapters);
-        
+
         // Make sure the chapters section is visible
         setVisibleSections(prev => ({
             ...prev,
@@ -287,11 +298,11 @@ function Dashboard() {
                                 />
                                 <Search className="absolute left-3 top-2.5 text-blue-300" size={18}/>
                                 {searchTerm && (
-                                    <button 
+                                    <button
                                         onClick={clearSearch}
                                         className="absolute right-3 top-2.5 text-blue-300 hover:text-white"
                                     >
-                                        <X size={18} />
+                                        <X size={18}/>
                                     </button>
                                 )}
                             </div>
@@ -328,11 +339,11 @@ function Dashboard() {
                             <span className="font-medium">Searching for: </span>
                             <span className="px-2 py-1 bg-blue-100 rounded-md">{searchTerm}</span>
                         </div>
-                        <button 
+                        <button
                             onClick={clearSearch}
                             className="text-sm text-blue-900 hover:text-blue-700 flex items-center"
                         >
-                            <X size={16} className="mr-1" />
+                            <X size={16} className="mr-1"/>
                             Clear search
                         </button>
                     </div>
@@ -364,7 +375,7 @@ function Dashboard() {
                                 isActive={visibleSections.chapters}
                                 onClick={() => toggleSection('chapters')}
                                 color="bg-pink-400"
-                                icon={<Video size={16}/>}
+                                icon={<VideoIcon size={16}/>}
                             />
                             <FilterButton
                                 type="Notes"
@@ -407,7 +418,7 @@ function Dashboard() {
                     <Button
                         asChild
                         className="flex items-center px-4 py-2 bg-orange-200 text-blue-900 rounded-md hover:bg-orange-300">
-                        <Link to="quiz/create">
+                        <Link to="quiz/create   ">
                             <GraduationCap size={18} className="mr-2"/>
                             New Quiz
                         </Link>
@@ -418,7 +429,7 @@ function Dashboard() {
                         <BookOpen size={18} className="mr-2"/>
                         New Flashcards
                     </button>
-                    <button 
+                    <button
                         className="flex items-center px-4 py-2 bg-pink-400 text-white rounded-md hover:bg-pink-500"
                         onClick={() => setIsUploadLectureModalOpen(true)}
                     >
@@ -430,7 +441,10 @@ function Dashboard() {
                 {/* Chapters Section */}
                 {shouldShowSection.chapters && (
                     <section className="mb-12">
-                        <SectionHeader title="Chapters" count={filteredData.chapters.length}/>
+                        <Link to="chapters">
+                            <SectionHeader title="Chapters" count={filteredData.chapters.length}/>
+                        </Link>
+
                         <div
                             className={`${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-4'}`}>
                             {filteredData.chapters.map(chapter => (
@@ -438,9 +452,8 @@ function Dashboard() {
                                     key={chapter.id}
                                     id={chapter.id}
                                     title={chapter.title}
-                                    updatedAt={chapter.updatedAt}
+                                    updatedAt={chapter.createdAt ? chapter.createdAt : undefined}
                                     type="chapter"
-                                    duration={chapter.duration}
                                 />
                             ))}
                         </div>
@@ -510,7 +523,7 @@ function Dashboard() {
                         {searchTerm ? (
                             <div>
                                 <p className="text-gray-500 text-lg">No results found for "{searchTerm}"</p>
-                                <button 
+                                <button
                                     onClick={clearSearch}
                                     className="mt-4 px-4 py-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200"
                                 >
@@ -518,20 +531,21 @@ function Dashboard() {
                                 </button>
                             </div>
                         ) : (
-                            <p className="text-gray-500 text-lg">No sections selected. Use the filter button to show content.</p>
+                            <p className="text-gray-500 text-lg">No sections selected. Use the filter button to show
+                                content.</p>
                         )}
                     </div>
                 )}
-                
+
                 {/* Upload Note Modal */}
-                <UploadNoteModal 
+                <UploadNoteModal
                     isOpen={isUploadNoteModalOpen}
                     onClose={() => setIsUploadNoteModalOpen(false)}
                     onUpload={handleNoteUpload}
                 />
-                
+
                 {/* Upload Lecture Modal */}
-                <UploadLectureModal 
+                <UploadLectureModal
                     isOpen={isUploadLectureModalOpen}
                     onClose={() => setIsUploadLectureModalOpen(false)}
                     onUpload={handleLectureUpload}

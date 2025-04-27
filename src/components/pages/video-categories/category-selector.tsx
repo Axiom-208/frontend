@@ -1,21 +1,7 @@
 import {Button} from "@/components/ui/button"
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import {Category} from "@/lib/chapters-data.ts";
 
-interface Category {
-    id: string
-    title: string
-    description: string
-    thumbnail: string
-    videos: Video[]
-}
-
-interface Video {
-    id: number;
-    url: string;
-    title: string;
-    topic: string;
-    description: string;
-}
 
 interface CategorySelectorProps {
     categories: Category[]
