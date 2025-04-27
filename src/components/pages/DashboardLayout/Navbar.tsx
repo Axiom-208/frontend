@@ -4,9 +4,12 @@ import {Menu, X, ChevronDown} from "lucide-react";
 import {DropdownMenuContent, DropdownMenuTrigger, DropdownMenu, DropdownMenuItem} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
+import {useDashboardContext} from "@/context/dashboard-context.ts";
 
 export default function DashboardNavbar() {
     const [isOpen, setIsOpen] = useState(false);
+
+    const {user} = useDashboardContext()
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 left-0 w-full z-50">
@@ -23,9 +26,9 @@ export default function DashboardNavbar() {
                                 <Button variant="ghost"
                                         className="flex items-center space-x-2 text-blue-900 hover:text-pink-500">
                                     <Avatar className="w-8 h-8 bg-yellow-200 text-blue-900">
-                                        <AvatarFallback>JD</AvatarFallback>
+                                        <AvatarFallback>{user.firstName.charAt(0).toUpperCase()}{user.lastName.charAt(0).toUpperCase()}</AvatarFallback>
                                     </Avatar>
-                                    <span>John Doe</span>
+                                    <span>{user.firstName} {user.lastName}</span>
                                     <ChevronDown size={16}/>
                                 </Button>
                             </DropdownMenuTrigger>
