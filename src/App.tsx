@@ -6,6 +6,7 @@ import DashboardLayout from "@/components/layouts/DashboardLayout.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Home from './pages/Home.tsx';
 import Logout from "@/pages/auth/logout.tsx";
+import Profile from './pages/Profile.tsx';
 import QuizPage from "@/pages/dashboard/quiz/single-quiz.tsx";
 import ResultsPage from "@/pages/dashboard/quiz/quiz-result.tsx";
 import CreateQuizPage from "@/pages/dashboard/quiz/create/create-quiz.tsx";
@@ -34,6 +35,7 @@ function App() {
                 {/* Protected dashboard routes */}
                 <Route path="dashboard" element={<DashboardLayout/>}>
                     <Route index element={<Dashboard/>}/>
+                    <Route path="profile" element={<Profile/>}/>
                     <Route path="quiz">
                         <Route path="create">
                             <Route index element={<CreateQuizPage/>}/>
