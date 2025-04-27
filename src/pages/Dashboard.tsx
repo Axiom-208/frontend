@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { FolderPlus, FileText, BookOpen, GraduationCap, Search, Grid, List, Upload, Video, Filter } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
+import { quizData } from '@/lib/quiz-data';
 
 //Faker data 
-//TODO @Delcio make this be the real data from the backend
 const mockNotes = [
   { id: 1, title: 'Project Ideas', updatedAt: '2 days ago' },
   { id: 2, title: 'Meeting Notes', updatedAt: '1 week ago' },
   { id: 3, title: 'Research Summary', updatedAt: 'Yesterday' },
 ];
 
-const mockQuizzes = [
-  { id: 1, title: 'JavaScript Basics', updatedAt: '3 days ago' },
-  { id: 2, title: 'React Fundamentals', updatedAt: '5 days ago' },
-];
+// Convert quizData to match the mock data format
+const mockQuizzes = quizData.map(quiz => ({
+  id: quiz.id,
+  title: quiz.title,
+  updatedAt: 'Recently added',
+  description: quiz.description
+}));
 
 const mockFlashcards = [
   { id: 1, title: 'Spanish Vocabulary', updatedAt: '1 day ago' },
@@ -35,14 +38,24 @@ const mockChapters = [
 type ItemType = 'note' | 'quiz' | 'flashcard' | 'chapter';
 
 interface ItemProps {
-  id: number;
+  id: string | number;
   title: string;
   updatedAt: string;
   type: ItemType;
   duration?: string;
 }
 
-const ItemCard: React.FC<ItemProps> = ({ title, updatedAt, type, duration }) => {
+const ItemCard: React.FC<ItemProps> = ({ id, title, updatedAt, type, duration }) => {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    if (type === 'quiz') {
+      navigate(`/dashboard/quiz/${id}`);
+    } else {
+      console.log(`Opening ${type}: ${title}`);
+    }
+  };
+
   //TODO Include this? Think of better icodns?
   const getIcon = () => {
     switch (type) {
@@ -78,7 +91,7 @@ const ItemCard: React.FC<ItemProps> = ({ title, updatedAt, type, duration }) => 
   return (
     <div 
       className="flex flex-col rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
-      onClick={() => console.log(`Opening ${type}: ${title}`)}
+      onClick={handleClick}
     >
       <div className={`${getColor()} p-6 flex items-center justify-center`}>
         {getIcon()}
