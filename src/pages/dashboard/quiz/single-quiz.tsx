@@ -1,4 +1,4 @@
-import {useState, useEffect, JSX} from "react"
+import {useState, useEffect} from "react"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Progress} from "@/components/ui/progress"
@@ -7,7 +7,7 @@ import type {Quiz, Question} from "@/schema/quiz.ts"
 import {useNavigate, useParams} from "react-router";
 
 
-export default function QuizPage(): JSX.Element {
+export default function QuizPage() {
     const navigate = useNavigate()
     const {quizId} = useParams() as unknown as { quizId: string };
 
