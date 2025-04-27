@@ -54,7 +54,7 @@ export default function QuizPage(): JSX.Element {
             setIsAnswered(false)
         } else {
             // Quiz completed, navigate to results with all answers
-            navigate(`/quiz/${quizId}/results?answers=${updatedAnswers.join(",")}`)
+            navigate(`results?answers=${updatedAnswers.join(",")}`)
         }
     }
 

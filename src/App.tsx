@@ -33,7 +33,7 @@ function App() {
                     <Route path="quiz">
                         <Route path=":quizId">
                             <Route index element={<QuizPage/>}/>
-                            <Route path="result" element={<ResultsPage/>}/>
+                            <Route path="results" element={<ResultsPage/>}/>
                         </Route>
                     </Route>
 
