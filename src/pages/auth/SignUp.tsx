@@ -26,16 +26,36 @@ function SignUp() {
 }
 
 const formSchema = z.object({
-    firstName: z.string().min(3).max(20),
-    lastName: z.string().min(2).max(20),
-    username: z.string().min(8).max(16),
-    email: z.string().email(),
-    password: z.string().min(12, {
-        message: "Password must have 12-24 characters"
-    }).max(24, {
-        message: "Password must have 12-24 characters"
-    }),
-    confirmPassword: z.string().min(12).max(24)
+    firstName: z.string()
+        .min(3, {message: "First name must be at least 3 characters"})
+        .max(20, {message: "First name must be at most 20 characters"})
+        .regex(/^[A-Za-z]+$/, {message: "First name must contain only letters"}),
+
+    lastName: z.string()
+        .min(2, {message: "Last name must be at least 2 characters"})
+        .max(20, {message: "Last name must be at most 20 characters"})
+        .regex(/^[A-Za-z]+$/, {message: "Last name must contain only letters"}),
+
+    username: z.string()
+        .min(8, {message: "Username must be at least 8 characters"})
+        .max(16, {message: "Username must be at most 16 characters"}),
+
+    email: z.string()
+        .email({message: "Enter a valid email"}),
+
+    password: z.string()
+        .min(12, {message: "Password must have 12-24 characters"})
+        .max(24, {message: "Password must have 12-24 characters"})
+        .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])/, {
+            message: "Password must contain at least one special character and one number",
+        }),
+
+    confirmPassword: z.string()
+        .min(12, {message: "Confirm Password must have 12-24 characters"})
+        .max(24, {message: "Confirm Password must have 12-24 characters"}),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
 });
 
 
@@ -60,32 +80,20 @@ function SignupForm({
         },
     })
 
-    console.log(form.getValues())
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("SUBMITTING")
-        const {email, password, confirmPassword, lastName, firstName, username} = values;
-        if (password !== confirmPassword) {
-            toast.error("Passwords don't match");
-            return;
-        }
+        const {email, password, firstName, lastName, username} = values;
         try {
-            register({
-                email,
-                password,
-                firstName,
-                lastName,
-                username
-            }).then(() => {
-                    toast.success("Account successfully created!");
-                    navigate("/dashboard");
-                }
-            );
+            register({email, password, firstName, lastName, username}).then(() => {
+                toast.success("Account successfully created!");
+                navigate("/dashboard");
+            });
         } catch (error) {
             console.error("Form submission error", error);
             toast.error("Failed to submit the form. Please try again.");
         }
     }
+
 
     return (
         <Form {...form}>
@@ -233,9 +241,7 @@ function SignupForm({
                         </FormItem>
                     )}
                 />
-                <Button type="button" onClick={() => {
-                    onSubmit(form.getValues())
-                }}>Submit</Button>
+                <Button type="submit">Submit</Button>
             </form>
         </Form>
     )

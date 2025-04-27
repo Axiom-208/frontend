@@ -19,7 +19,6 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -28,7 +27,7 @@ import {
 import {
     Input
 } from "@/components/ui/input.tsx"
-import {useNavigate} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {logIn} from "@/api/auth/requests.ts";
 
 function LogIn() {
@@ -46,10 +45,10 @@ function LogIn() {
 
 
 const formSchema = z.object({
-    email: z.string().email({
-        message: "Enter a valid email"
-    }),
-    password: z.string().min(5).max(12)
+    email: z.string().email({message: "Enter a valid email"}),
+    password: z.string()
+        .min(2, {message: "Password must be at least 2 characters"})
+        .max(24, {message: "Password must be at most 24 characters"})
 });
 
 function LoginForm() {
@@ -89,57 +88,64 @@ function LoginForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-10 w-full max-w-[500px]">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-4  w-full max-w-[500px]">
 
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl className="">
-                                <Input
-                                    placeholder="johndoe@mail.com"
-
-                                    type="email"
-                                    {...field} />
-                            </FormControl>
-                            <FormDescription>Enter your email</FormDescription>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                                <div className="relative">
+                <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl className="">
                                     <Input
-                                        placeholder="******"
-                                        type={showPassword ? "text" : "password"}
-                                        {...field}
-                                    />
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon"
-                                        className="absolute right-2 top-1/2 w-fit h-fit pr-2 transform -translate-y-1/2 hover:bg-white cursor-pointer"
-                                        onClick={() => setShowPassword((prev) => !prev)}
-                                    >
-                                        {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
-                                    </Button>
-                                </div>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                />
+                                        placeholder="johndoe@mail.com"
 
-                <Button type="submit">Submit</Button>
+                                        type="email"
+                                        {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <Input
+                                            placeholder="******"
+                                            type={showPassword ? "text" : "password"}
+                                            {...field}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute right-2 top-1/2 w-fit h-fit pr-2 transform -translate-y-1/2 hover:bg-white cursor-pointer"
+                                            onClick={() => setShowPassword((prev) => !prev)}
+                                        >
+                                            {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+                                        </Button>
+                                    </div>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <Button asChild variant="ghost"
+                        className="w-fit p-0 text-sm hover:bg-trasparent bg-trasparent text-zinc-600">
+                    <Link to="">
+                        Forgot Password?
+                    </Link>
+                </Button>
+                <Button className="w-fit" type="submit">Submit</Button>
             </form>
         </Form>
     )
