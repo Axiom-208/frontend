@@ -1,8 +1,5 @@
-const ENV = import.meta.env
-
-
 const apiConfig = {
-    apiUrl: ENV.VITE_API_URL || "http://localhost:8000",
+    apiUrl: "https://axiom-backend-585462847531.europe-west2.run.app",
     timeout: 10000,
 }
 
