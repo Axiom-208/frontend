@@ -43,7 +43,7 @@ export default function DashboardNavbar() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild
                                                   className="hover:bg-yellow-50 text-blue-900 focus:bg-yellow-50 focus:text-pink-500">
-                                    <Link to="/login">Logout</Link>
+                                    <Link to="/auth/login">Logout</Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

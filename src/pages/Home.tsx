@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
             Transform your learning experience with AI-powered tools designed specifically for students.
           </p>
           <div className="mt-8 flex justify-center">
-            <Link to="/signup" className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-yellow-200 hover:bg-yellow-300 md:py-4 md:text-lg md:px-10">
+            <Link to="auth/signup" className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-yellow-200 hover:bg-yellow-300 md:py-4 md:text-lg md:px-10">
               Get Started
             </Link>
           </div>
@@ -101,7 +101,7 @@ const HomePage: React.FC = () => {
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
-              <Link to="/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-yellow-200 hover:bg-yellow-300">
+              <Link to="auth/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-yellow-200 hover:bg-yellow-300">
                 Get started
               </Link>
             </div>
