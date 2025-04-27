@@ -6,6 +6,7 @@ import {DashboardContext} from "@/context/dashboard-context.ts";
 import {LoaderCircle} from "lucide-react"
 import {useIsMobile} from "@/hooks/use-mobile.ts";
 
+
 function DashboardLayout() {
 
     const isMobile = useIsMobile()

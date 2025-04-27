@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docker:clean": "docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)",
+    "docker:build": "docker buildx build --platform linux/amd64 -t gcr.io/axiom-454518/frontend .",
+    "docker:run": "docker run --name axiom-frontend -p 8080:8080 -d gcr.io/axiom-454518/frontend",
+    "docker:push": "docker push gcr.io/axiom/frontend"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
