@@ -28,10 +28,14 @@ function SignUp() {
 const formSchema = z.object({
     firstName: z.string().min(3).max(20),
     lastName: z.string().min(2).max(20),
-    username: z.string().min(3).max(20),
+    username: z.string().min(8).max(16),
     email: z.string().email(),
-    password: z.string().min(6).max(12),
-    confirmPassword: z.string().min(6).max(12)
+    password: z.string().min(12, {
+        message: "Password must have 12-24 characters"
+    }).max(24, {
+        message: "Password must have 12-24 characters"
+    }),
+    confirmPassword: z.string().min(12).max(24)
 });
 
 

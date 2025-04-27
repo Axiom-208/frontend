@@ -11,6 +11,7 @@ import ResultsPage from "@/pages/dashboard/quiz/quiz-result.tsx";
 import CreateQuizPage from "@/pages/dashboard/quiz/create/create-quiz.tsx";
 import ManualCreatePage from "@/pages/dashboard/quiz/create/create-quiz-manually.tsx";
 import UploadCreatePage from "@/pages/dashboard/quiz/create/create-quiz-with-document.tsx";
+import Videos from "@/pages/dashboard/chapter/categories.tsx";
 
 function App() {
     return (
@@ -45,6 +46,8 @@ function App() {
                             <Route path="results" element={<ResultsPage/>}/>
                         </Route>
                     </Route>
+                    <Route path="chapters" element={<Videos/>}/>
+
 
                 </Route>
             </Routes>

@@ -1,9 +1,14 @@
-import { Link } from "react-router";
-import { Facebook, Twitter, Linkedin } from "lucide-react";
+import {Link, useLocation} from "react-router";
+import {Facebook, Twitter, Linkedin} from "lucide-react";
 
 export default function DashboardFooter() {
+
+    const location = useLocation();
+    const isInChapters = location.pathname.endsWith("chapters")
+
+
     return (
-        <footer className="bg-white border-t shadow-sm py-6 mt-8">
+        <footer className={`bg-white ${isInChapters && "hidden"} border-t shadow-sm py-6`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
 
@@ -11,7 +16,7 @@ export default function DashboardFooter() {
                         © {new Date().getFullYear()} Axiom. All rights reserved.
                     </div>
 
-                    <div className="flex space-x-6 text-sm hidden">
+                    <div className="flex space-x-6 text-sm">
                         <Link to="/about" className="text-gray-600 hover:text-blue-500">
                             About
                         </Link>
@@ -25,14 +30,17 @@ export default function DashboardFooter() {
 
                     {/* Right: Social Media Icons */}
                     <div className="flex space-x-4">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
-                            <Facebook className="w-5 h-5" />
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                           className="text-gray-600 hover:text-blue-600">
+                            <Facebook className="w-5 h-5"/>
                         </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500">
-                            <Twitter className="w-5 h-5" />
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                           className="text-gray-600 hover:text-blue-500">
+                            <Twitter className="w-5 h-5"/>
                         </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700">
-                            <Linkedin className="w-5 h-5" />
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                           className="text-gray-600 hover:text-blue-700">
+                            <Linkedin className="w-5 h-5"/>
                         </a>
                     </div>
                 </div>

@@ -1,11 +1,17 @@
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
-import {FileText, PenLine} from "lucide-react"
-import {Link} from "react-router";
+import {ArrowLeft, FileText, PenLine} from "lucide-react"
+import {Link, useNavigate} from "react-router";
 
 export default function CreateQuizPage() {
+    const navigate = useNavigate();
     return (
         <div className="container mx-auto px-4 py-12">
+            <Button variant="ghost" className="mb-6 flex items-center gap-2"
+                    onClick={() => navigate("/dashboard")}>
+                <ArrowLeft className="h-4 w-4"/>
+                Back to Dashboard
+            </Button>
             <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
                     <h1 className="text-3xl font-bold tracking-tight mb-4">Create a New Quiz</h1>
