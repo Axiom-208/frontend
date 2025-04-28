@@ -24,21 +24,21 @@ export const videoCategories: Category[] = [
         videos: [
             {
                 id: 1,
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                url: "https://youtube.com/shorts/zkuCDT2p00Q?si=M11aEgPhVZ_GvaMH",
                 title: "Introduction to Physics",
                 description: "Learn about the fundamental principles of physics and how they apply to our everyday lives.",
                 topic: "Physics",
             },
             {
                 id: 2,
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                url: "https://youtube.com/shorts/m5oyHpcE9pI?si=9fuyjGyJKo4mOXws",
                 title: "Newton's Laws of Motion",
                 description: "Understand the three laws that form the foundation of classical mechanics.",
                 topic: "Physics",
             },
             {
                 id: 3,
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                url: "https://youtube.com/shorts/jhwvCKrUq9U?si=lgAfEBEt-mSiVuT0",
                 title: "Quantum Physics Basics",
                 description: "Dive into the strange world of quantum mechanics and particle behavior.",
                 topic: "Physics",

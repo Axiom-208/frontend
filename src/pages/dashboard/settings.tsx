@@ -141,6 +141,7 @@ export default function SettingsPage() {
                     <TabsTrigger value="preferences">Preferences</TabsTrigger>
                     <TabsTrigger value="account">Account</TabsTrigger>
                     <TabsTrigger className={`${!user.isAdmin && "hidden"}`} value="admin">Admin</TabsTrigger>
+                    <TabsTrigger className={`${!user.isDev && "hidden"}`} value="dev">Developer</TabsTrigger>
                 </TabsList>
 
                 {/* Profile Tab */}
@@ -422,6 +423,10 @@ export default function SettingsPage() {
                 </TabsContent>
 
                 <TabsContent value="admin" className="space-y-6">
+
+                </TabsContent>
+
+                <TabsContent value="dev" className="space-y-6">
 
                 </TabsContent>
             </Tabs>

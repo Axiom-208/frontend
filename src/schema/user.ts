@@ -26,6 +26,7 @@ export type User = {
     email: string;
     username: string;
     isAdmin?: boolean;
+    isDev?: boolean;
     preferences?: {
         theme?: "light" | "dark" | "system";
         notificationEmail?: boolean;
