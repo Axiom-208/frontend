@@ -404,7 +404,8 @@ function Dashboard() {
 
                 {/* Quick Action Buttons */}
                 <div className="flex flex-wrap gap-4 mb-8">
-                    <button className="flex items-center px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800">
+                    <button
+                        className="hidden items-center px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800">
                         <FolderPlus size={18} className="mr-2"/>
                         New Folder
                     </button>
@@ -417,15 +418,14 @@ function Dashboard() {
                     </button>
                     <Button
                         asChild
-                        className="flex items-center px-4 py-2 bg-orange-200 text-blue-900 rounded-md hover:bg-orange-300">
+                        className="hidden items-center px-4 py-2 bg-orange-200 text-blue-900 rounded-md hover:bg-orange-300">
                         <Link to="quiz/create   ">
                             <GraduationCap size={18} className="mr-2"/>
                             New Quiz
                         </Link>
-
                     </Button>
                     <button
-                        className="flex items-center px-4 py-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200">
+                        className="hidden items-center px-4 py-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200">
                         <BookOpen size={18} className="mr-2"/>
                         New Flashcards
                     </button>
