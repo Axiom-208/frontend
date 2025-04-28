@@ -136,7 +136,7 @@ export default function SettingsPage() {
             </div>
 
             <Tabs defaultValue="profile" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-3 md:w-auto">
+                <TabsList className="w-full md:w-auto">
                     <TabsTrigger value="profile">Profile</TabsTrigger>
                     <TabsTrigger value="preferences">Preferences</TabsTrigger>
                     <TabsTrigger value="account">Account</TabsTrigger>
